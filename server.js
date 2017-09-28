@@ -20,7 +20,7 @@ class Server {
    */
   start(callback) {
     let server = this;
-    server.connection = net.createTServer((socket) => {
+    server.connection = net.createServer((socket) => {
       let client = new Client(socket);
       console.log(`${client.name} connected.`);
 
