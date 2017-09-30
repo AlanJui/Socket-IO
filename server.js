@@ -22,10 +22,10 @@ class Server {
     let server = this;
     server.connection = net.createServer((socket) => {
       let client = new Client(socket);
-      console.log(`${client.name} connected.`);
+      console.log(`New connection from: ${client.name}`);
 
       // Broadcast to everyone connected the new client connection
-      server.broadcast(`${client.name} connected.\n`, client);
+      server.broadcast(`${client.name} connected.\n\n`, client);
 
       // Storing client for later usage
       server.clients.push(client);
@@ -33,11 +33,12 @@ class Server {
       // Triggered on message received by this client
       socket.on('data', (data) => {
         let msg = data.toString().replace(/[\n\r]*$/, '');
+        // let msg = data.toString();
         console.log(`${client.name} said: ${msg}`);
-        socket.write(`We got your message (${msg}). Thanks!\n`);
+        socket.write(`We got your message listed below:\n${msg}\n`);
 
         // Broadcasting the client's message to the other clients
-        server.broadcast(`${client.name} says: ${data}`, client);
+        server.broadcast(`${client.name} says: ${data}\n`, client);
       });
 
       // Triggered when this client disconnects
@@ -51,10 +52,10 @@ class Server {
     });
 
     // starting the server
-    this.connection.listen(this.port, this.address);
+    server.connection.listen(this.port, this.address);
 
     // setuping the callback of the start function
-    this.connection.on('listening', callback);
+    server.connection.on('listening', callback);
   }
 
   /**
