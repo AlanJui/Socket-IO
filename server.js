@@ -33,8 +33,7 @@ class Server {
       // Triggered on message received by this client
       socket.on('data', (data) => {
         let msg = data.toString().replace(/[\n\r]*$/, '');
-        // let msg = data.toString();
-        console.log(`${client.name} said: ${msg}`);
+        // console.log(`${client.name} said: ${msg}`);
         socket.write(`We got your message listed below:\n${msg}\n`);
 
         // Broadcasting the client's message to the other clients
@@ -45,14 +44,21 @@ class Server {
       socket.on('end', () => {
         // Removing the client from the list
         server.clients.splice(server.clients.indexOf(client), 1);
-        console.log(`${client.name} disconnected.`);
+        // console.log(`${client.name} disconnected.`);
         // Broadcasting that this client left
         server.broadcast(`${client.name} disconnected.\n`);
       });
 
       socket.on('error', (err) => {
         console.error(`Connection error:`);
-        console.error(err.message);
+        console.error(err.stack);
+
+        // Removing the client from the list
+        server.clients.splice(server.clients.indexOf(client), 1);
+        // console.log(`${client.name} disconnected.`);
+        // Broadcasting that this client left
+        server.broadcast(`${client.name} disconnected.\n`);
+
         console.log(`\n\n====================================================`);
       });
     });

@@ -19,11 +19,18 @@ client.connect(PORT, ADDRESS, async () => {
     // client.write(`System info of client:\n${str}`);
 
     const hostName = await SystemInformation.getHostName();
-    client.write(`My host name is: ${hostName}\n`);
-    client.destroy();
+    client.write(`${tools.getTimeStamp()} : My host name is ${hostName}\n`);
+
+    setInterval(() => {
+      client.write(`${tools.getTimeStamp()} : ${hostName} is still alived!!`)
+    }, 10000);
+
   } catch (e) {
     console.error(e.message);
+  } finally {
+    // client.destroy();
   }
+
 });
 
 client.on('data', (data) => {
