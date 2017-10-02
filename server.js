@@ -49,6 +49,12 @@ class Server {
         // Broadcasting that this client left
         server.broadcast(`${client.name} disconnected.\n`);
       });
+
+      socket.on('error', (err) => {
+        console.error(`Connection error:`);
+        console.error(err.message);
+        console.log(`\n\n====================================================`);
+      });
     });
 
     // starting the server
@@ -56,6 +62,7 @@ class Server {
 
     // setuping the callback of the start function
     server.connection.on('listening', callback);
+
   }
 
   /**
